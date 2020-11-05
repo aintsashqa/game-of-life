@@ -46,7 +46,11 @@ func render(screen *ebiten.Image) error {
 		return err
 	}
 
-	if err := ebitenutil.DebugPrint(screen, fmt.Sprintf("fps: %f", ebiten.CurrentFPS())); err != nil {
+	// if err := ebitenutil.DebugPrint(screen, fmt.Sprintf("fps: %f", ebiten.CurrentFPS())); err != nil {
+	// 	return err
+	// }
+
+	if err := ebitenutil.DebugPrint(screen, fmt.Sprintf("Generations: %d", currentBoard.GenerationCount)); err != nil {
 		return err
 	}
 
@@ -58,8 +62,8 @@ func render(screen *ebiten.Image) error {
 		game.NextGeneration(&currentBoard)
 	}
 
-	if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) {
-		currentBoard.AddTile(ebiten.CursorPosition())
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		currentBoard.SwitchTile(ebiten.CursorPosition())
 	}
 
 	if inpututil.IsKeyJustReleased(ebiten.KeySpace) {

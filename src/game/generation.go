@@ -39,6 +39,7 @@ func NextGeneration(board *Board) {
 	}
 
 	board.Tiles = nextGeneration
+	board.GenerationCount++
 }
 
 func countOfNearestTiles(x, y, width, height int, tiles [][]bool) int {

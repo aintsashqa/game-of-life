@@ -9,18 +9,22 @@ import (
 )
 
 type Board struct {
-	CurrentImage *ebiten.Image
-	Tiles        [][]bool
-	Width        int
-	Height       int
+	CurrentImage    *ebiten.Image
+	BorderImage     *ebiten.Image
+	Tiles           [][]bool
+	Width           int
+	Height          int
+	GenerationCount int
 }
 
 func NewBoard() Board {
 	board := Board{}
 
 	board.CurrentImage = resources.LoadDefaultImage()
+	board.BorderImage = resources.LoadDefaultBorder()
 	board.Width = config.Load().BoardWidth
 	board.Height = config.Load().BoardHeight
+	board.GenerationCount = 0
 
 	board.fill()
 
@@ -44,9 +48,10 @@ func (b *Board) fill() {
 
 func (b *Board) Reset() {
 	b.fill()
+	b.GenerationCount = 0
 }
 
-func (b *Board) AddTile(x, y int) {
+func (b *Board) SwitchTile(x, y int) {
 	x = x / config.Load().DefaultImageWidth
 	y = y / config.Load().DefaultImageHeight
 
@@ -55,12 +60,28 @@ func (b *Board) AddTile(x, y int) {
 		return
 	}
 
-	b.Tiles[y][x] = true
+	b.Tiles[y][x] = !b.Tiles[y][x]
 }
 
 func (b *Board) Render(screen *ebiten.Image) error {
 	for row := 0; row < b.Height; row++ {
+
+		borderOption := &ebiten.DrawImageOptions{}
+		borderScaleX := float64(config.Load().WindowWidth)
+		borderPositionY := float64(row * config.Load().DefaultImageHeight)
+		borderOption.GeoM.Scale(borderScaleX, 1)
+		borderOption.GeoM.Translate(0, borderPositionY)
+		screen.DrawImage(b.BorderImage, borderOption)
+
 		for column := 0; column < b.Width; column++ {
+
+			borderOption := &ebiten.DrawImageOptions{}
+			borderScaleY := float64(config.Load().WindowHeight)
+			borderPositionX := float64(column * config.Load().DefaultImageWidth)
+			borderOption.GeoM.Scale(1, borderScaleY)
+			borderOption.GeoM.Translate(borderPositionX, 0)
+			screen.DrawImage(b.BorderImage, borderOption)
+
 			if !b.Tiles[row][column] {
 				continue
 			}

@@ -35,7 +35,7 @@ func LoadDefaultBorder() *ebiten.Image {
 	}
 
 	current.Fill(color.RGBA{
-		R: 255,
+		R: 128,
 		G: 0,
 		B: 0,
 		A: 255,
