@@ -20,7 +20,7 @@ func NextGeneration(board *Board) {
 	}
 	lastGeneration = time.Now()
 
-	nextGeneration := (NewBoard().Tiles)
+	nextGeneration := (NewBoard(board.Width, board.Height).Tiles)
 
 	for row := 0; row < board.Height; row++ {
 		for column := 0; column < board.Width; column++ {

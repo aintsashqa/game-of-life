@@ -20,7 +20,7 @@ func init() {
 
 func main() {
 	isGenerate = false
-	currentBoard = game.NewBoard()
+	currentBoard = game.NewBoard(16, 12)
 	// currentBoard.Tiles[0][1] = true
 	// currentBoard.Tiles[1][2] = true
 	// currentBoard.Tiles[2][0] = true
@@ -62,16 +62,10 @@ func render(screen *ebiten.Image) error {
 		game.NextGeneration(&currentBoard)
 	}
 
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-		currentBoard.SwitchTile(ebiten.CursorPosition())
-	}
+	currentBoard.Update()
 
 	if inpututil.IsKeyJustReleased(ebiten.KeySpace) {
 		isGenerate = !isGenerate
-	}
-
-	if inpututil.IsKeyJustReleased(ebiten.KeyR) {
-		currentBoard.Reset()
 	}
 
 	return nil

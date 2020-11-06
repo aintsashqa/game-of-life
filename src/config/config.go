@@ -21,6 +21,7 @@ type Config struct {
 
 	BoardWidth  int
 	BoardHeight int
+	BoardScale  float64
 
 	GenerationTimeout time.Duration
 }
@@ -43,8 +44,9 @@ func Load() *Config {
 			DefaultImageFilename: "resources/alive.png",
 			DefaultImageMargin:   0,
 
-			BoardWidth:  16,
-			BoardHeight: 12,
+			BoardWidth:  16, // Default 16
+			BoardHeight: 12, // Default 12
+			BoardScale:  1,  // Default 1
 
 			GenerationTimeout: time.Millisecond * 500,
 		}
